@@ -6,6 +6,7 @@ const userSchema = new Schema({
   email: String,
   password: String,
   phone: String,
+  image: String,
   orders: [
     {
       product: {
@@ -24,7 +25,7 @@ const userSchema = new Schema({
       createdAt: String,
     },
   ],
-  createdAt:String
+  createdAt: String,
 });
 
 module.exports = model("User", userSchema);

@@ -5,6 +5,18 @@ module.exports = gql`
     productID: ID
     createdAt: String
   }
+
+  type Specification {
+    country: String
+    weight: String
+    color: [String]!
+    material: [String]!
+  }
+
+  type Feedback {
+    body: String
+    rating: Int
+  }
   type User {
     id: ID!
     lastName: String
@@ -14,6 +26,18 @@ module.exports = gql`
     orders: [Prod]!
     cart: [Prod]!
     createdAt: String
+    image: String
+    token: String
+  }
+
+  type Product {
+    name: String
+    brand: String
+    price: Int
+    features: String
+    specification: Specification
+    feedback: Feedback
+    picture: [String]
   }
   input CreateUserInput {
     lastName: String
@@ -22,7 +46,7 @@ module.exports = gql`
     phone: String
     password: String
     confirmPassword: String
-    createdAt: String
+    image: String
   }
   input AddToCartInput {
     productID: ID
@@ -40,6 +64,8 @@ module.exports = gql`
   type Query {
     getUser(id: ID!): User!
     getUsers: User!
+    getProducts: Product!
+    getProduct(id: ID!): Product!
     login(input: LoginInput): User!
   }
   type Mutation {
@@ -47,5 +73,7 @@ module.exports = gql`
     deleteUser(id: ID): User
     addToCart(input: AddToCartInput): User!
     orderItem(input: OrderItemInput): User!
+    getProduct(id: ID): Product!
+    getProducts: Product!
   }
 `;
