@@ -1,7 +1,1 @@
-module.exports={
-  Query:{
-    sayHi:()=>{
-      return "Hello"
-    }
-  }
-}
+module.exports = {};
