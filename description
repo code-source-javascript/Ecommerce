@@ -1,0 +1,89 @@
+General Overview of System’s Functional Requirements
+
+A client who uses the system and would like to make a purchase after viewing the company products and services, 
+creates an account with the company to begin the whole process. 
+The client can then go ahead to make purchases of the products or services he desires through a given set of payment options. 
+The client receives confirmation when the payment goes through. 
+Account holders can likewise sell thier propertes via the sytem after confirmation from company.
+A client with no account can only view company’s addresses and products and services. 
+The company makes frequent updates of products and services.
+
+
+
+ The system must display company's address to clients
+• The system must display the company's products or services to clients in pictures with
+their respective prices and descriptions
+• The system must allow clients to register or create an account with the company
+• The system must provide clients with an option to make a purchase
+• The system must permit clients to make purchase only when they have an account
+• The company must confirm product to be purchased before client can begin payment
+• The system must provide clients who want to make purchases with an agreement form
+
+
+
+System Requirements
+• The system must permit a variety of modes of payment
+• The system must alert clients when payment goes through
+• The system must allow clients to be able to track amount payed per a given period of
+time when they access their account
+• The system must send updates of new uploads to account holders
+• The system must support conditional payments such as on a daily or monthly basis
+• The system must provide clients with an opportunity to sell properties after
+confirmation from company
+
+
+User Stories and their Complexity
+1. Clients visit the system to be met with ads on goods and services the company has to offer. (Not complex, hence no need to break down)
+2. Clients can create and account with the company. (Not complex, hence no need to break down)
+3. Account holders can purchase or make payments for company products and services. (Not complex, hence no need to break down)
+4. Account holders can sell properties (Not complex, hence no need to break down)
+5. Payments would be via credit cards (master and visa cards), mobile money (MTN and
+Vodafone) or escrow. (Complex, hence needs to break down)
+6. Account holders are kept posted on new uploads. (Not complex, hence no need to break
+down)
+7. Account holders can track payment progress. (Not complex, hence no need to break
+down)
+
+User Story Pre- and Post-Conditions
+
+User Story 1 Post-Condition:
+• Client activity is monitored and stored as cookies.
+• Client activity is successfully stored in Client logs.
+User Story 2 Pre-Condition:
+• Client fills forms and all fields with asterisks
+• Client has agreed to terms and conditions.
+Post-Condition:
+• Account is created, confirmed and saved in database.
+• Client account is created successfully and stored in logs.
+3
+ 
+System Requirements
+
+User Story 3 Pre-Condition:
+• Client has a regular account with the company.
+• Client has signed in.
+• Client has a valid payment option.
+Post-Condition:
+• Property details along with payment details is shown to client.
+• Property details along with payment details is saved in database.
+• Property details along with payment details is saved in escrow, for escrow users
+• Transaction successful alert is sent to client
+
+User Story 4 Pre-Condition:
+• Client has signed in Post-Condition:
+• Client receives confirmation alert from company.
+• Property is scrutinized and uploaded by company
+• Property is shown on website.
+
+User Story 6 Pre-Condition:
+• Client has an account with company User Story 7
+Pre-Condition:
+• Client has an account with company
+• Client has bought or is buying a product
+Relevant Non-functional Requirements
+• Only the company must be able to edit prices of products or services
+• The system should be able to support different platforms.
+• Account holder’s information must be private be only available to the account holder
+and company
+• The system should be user friendly, easy to navigate through
+• The system should be capable of handling several users without affecting performance
