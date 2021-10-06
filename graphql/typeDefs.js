@@ -33,7 +33,9 @@ module.exports = gql`
   type Product {
     name: String
     brand: String
+    category: String
     price: Int
+    quantity: Int
     features: String
     specification: Specification
     feedback: Feedback
@@ -49,17 +51,28 @@ module.exports = gql`
     image: String
   }
   input AddToCartInput {
-    productID: ID
-    createdAt: String
+    productId: ID
   }
-
-  input OrderItemInput {
-    productId: ID!
-    createdAt: String
+  input SpecificationInput {
+    country: String
+    weight: String
+    color: [String]!
+    material: [String]!
   }
+  
   input LoginInput {
     email: String
     password: String
+  }
+  input ProductInput {
+    name: String
+    brand: String
+    category: String
+    price: Int
+    quantity: Int
+    features: String
+    specification: SpecificationInput
+    picture: [String]
   }
   type Query {
     getUser(id: ID!): User!
@@ -70,10 +83,12 @@ module.exports = gql`
   }
   type Mutation {
     createUser(input: CreateUserInput): User!
-    deleteUser(id: ID):[User]!
+    deleteUser(id: ID): User!
     addToCart(input: AddToCartInput): User!
-    orderItem(input: OrderItemInput): User!
-    getProduct(id: ID): Product!
-    getProducts: Product!
+    orderItem( productId: ID!): User!
+    addNewProduct(input: ProductInput): Product!
+    updateProduct(product: ProductInput, productID: ID): Product!
+    updateQuantity(productID: ID, quantity: Int): Product!
+    deleteProduct(productID: ID): Product!
   }
 `;
