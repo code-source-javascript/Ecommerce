@@ -23,11 +23,11 @@ module.exports = gql`
     firstName: String
     email: String
     phone: String
+    token: String
     orders: [Prod]!
     cart: [Prod]!
     createdAt: String
     image: String
-    token: String
   }
 
   type Product {
@@ -58,19 +58,19 @@ module.exports = gql`
     createdAt: String
   }
   input LoginInput {
-    username: String
+    email: String
     password: String
   }
   type Query {
     getUser(id: ID!): User!
-    getUsers: User!
-    getProducts: Product!
+    getUsers: [User]!
+    getProducts: [Product]!
     getProduct(id: ID!): Product!
     login(input: LoginInput): User!
   }
   type Mutation {
     createUser(input: CreateUserInput): User!
-    deleteUser(id: ID): User
+    deleteUser(id: ID):[User]!
     addToCart(input: AddToCartInput): User!
     orderItem(input: OrderItemInput): User!
     getProduct(id: ID): Product!
