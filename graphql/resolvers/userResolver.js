@@ -30,7 +30,7 @@ module.exports = {
         throw new Error(err);
       }
     },
-    login: async function (_, { input: { email, password } }) {
+    login: async function (_, { email, password }) {
       try {
         const user = await User.findOne({ email: email });
         if (user) {
@@ -40,6 +40,8 @@ module.exports = {
             lastName: user.lastName,
             firstName: user.firsName,
             email: user.email,
+            cart: user.cart,
+            orders: user.orders,
             phone: user.phone,
             image: user.image,
             id: user._id,
@@ -67,6 +69,7 @@ module.exports = {
           password,
           confirmPassword,
           image,
+          address,
         },
       },
       context
@@ -96,6 +99,7 @@ module.exports = {
           email,
           phone,
           image,
+          address,
           password: hashPassword,
           createdAt: new Date(),
         });
@@ -107,6 +111,7 @@ module.exports = {
           email,
           phone,
           image,
+          address,
           id: res._id,
         });
         return {
@@ -125,35 +130,44 @@ module.exports = {
         return _user;
       } else throw new Error("User Not Available");
     },
-    addToCart: async function (_, { input: { productID } }, context) {
+    addToCart: async function (_, { id, shipping, variation }, context) {
       try {
         const user = checkAuth(context);
         if (user) {
-          const product = await Product.findById(productID);
+          const product = await Product.findById(id);
           if (product) {
             const cartUser = await User.findById(user.id);
             cartUser.cart.unshift({
-              productID: product._id,
+              product: product._id,
+              name: product.name,
+              seller: product.seller,
+              shipping: product.shipping,
+              variation,
+              unitPrice: product.price,
               createdAt: new Date(),
             });
           }
-          const res = cartUser.save();
+          const res = await cartUser.save();
           return res;
         } else throw new Error("You must be authorized");
       } catch (err) {
         throw new Error(err);
       }
     },
-    orderItem: async function (_, { productID }, context) {
+    orderItem: async function (_, { id, station }, context) {
       try {
         const user = checkAuth(context);
         if (user) {
           const _user = await User.findById(user.id);
           _user.orders.unshift({
-            productId: productID,
+            cardId: id,
+            station,
+            status: "PENDING",
             createdAt: new Date(),
           });
-          _user.cart.filter();
+          _user.cart.filter((cart) => cart.cartId == id);
+          const res = await _user.save();
+          return res;
         }
       } catch (err) {
         throw new Error(err);

@@ -33,8 +33,14 @@ module.exports = {
           price,
           quantity,
           features,
-          specification,
+          specifications,
           picture,
+          shipping,
+          boxItem,
+          discount,
+          seller,
+          details,
+          variation,
         },
       },
       context
@@ -49,8 +55,14 @@ module.exports = {
             price,
             quantity,
             features,
-            specification,
+            specifications,
             picture,
+            shipping,
+            boxItem,
+            discount,
+            seller,
+            details,
+            variation,
           });
 
           const res = await product.save();
@@ -61,39 +73,50 @@ module.exports = {
         throw new Error(err);
       }
     },
-    updateProduct: async function (_, { product, productID }, context) {
+    updateProduct: async function (_, { product, id }, context) {
       try {
         const employee = checkAuth(context);
         if (employee) {
-          const updateProduct = await Product.findByIdAndUpdate(
-            productID,
-            product
-          );
+          const updateProduct = await Product.findByIdAndUpdate(id, product);
           return updateProduct;
         } else throw new Error("User must be authenticate");
       } catch (err) {
         throw new err();
       }
     },
-    updateQuantity: async function (_, { productID, quantity }) {
+    updateQuantity: async function (_, { id, quantity }, context) {
       try {
         const employee = checkAuth(context);
         if (employee) {
-          const product = await Product.findById(productID);
+          const product = await Product.findById(id);
           product.quantity += quantity;
           const res = await product.save();
-          
+
           return res;
         } else throw new Error("User is must login");
       } catch (err) {
         throw new Error(err);
       }
     },
-    deleteProduct: async function (_, { productID }, context) {
+    updateDiscount: async function (_, { id, discount }) {
       try {
         const employee = checkAuth(context);
         if (employee) {
-          const product = await Product.findByIdAndDelete(productID);
+          const product = await Product.findById(id);
+          product.discount = discount;
+          const res = await product.save();
+
+          return res;
+        } else throw new Error("User is must login");
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
+    deleteProduct: async function (_, { id }, context) {
+      try {
+        const employee = checkAuth(context);
+        if (employee) {
+          const product = await Product.findByIdAndDelete(id);
           return product;
         }
       } catch (err) {

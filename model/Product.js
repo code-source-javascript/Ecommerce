@@ -4,19 +4,36 @@ const productSchema = new Schema({
   name: String,
   brand: String,
   price: Number,
-  features: String,
+  variation: [String],
   quantity: Number,
   category: String,
-  specification: {
-    country: String,
-    weight: String,
-    color: [String],
-    material: [String],
-  },
-  feedback: {
-    body: String,
-    rating: Number,
-  },
+  discount: Number,
+  details: String,
+  features: [
+    {
+      name: String,
+      value: String,
+      keyValue: Boolean,
+    },
+  ],
+  specifications: [
+    {
+      name: String,
+      value: String,
+    },
+  ],
+  boxItem: [String],
+  feedback: [
+    {
+      userID: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+      body: String,
+      rating: Number,
+      createdAt: String,
+    },
+  ],
   picture: [String],
 });
 
