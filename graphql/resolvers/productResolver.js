@@ -1,5 +1,5 @@
 const Product = require("../../model/Product");
-const checkAuth = require("../../util/checkAuth");
+const { checkEmpToken } = require("../../util/checkAuth");
 module.exports = {
   Query: {
     getProducts: async function () {
@@ -46,8 +46,8 @@ module.exports = {
       context
     ) {
       try {
-        const admin = checkAuth(context);
-        if (admin) {
+        const employee = checkEmpToken(context);
+        if (employee) {
           const product = await new Product({
             name,
             brand,
@@ -75,7 +75,7 @@ module.exports = {
     },
     updateProduct: async function (_, { product, id }, context) {
       try {
-        const employee = checkAuth(context);
+        const employee = checkEmpToken(context);
         if (employee) {
           const updateProduct = await Product.findByIdAndUpdate(id, product);
           return updateProduct;
@@ -86,7 +86,7 @@ module.exports = {
     },
     updateQuantity: async function (_, { id, quantity }, context) {
       try {
-        const employee = checkAuth(context);
+        const employee = checkEmpToken(context);
         if (employee) {
           const product = await Product.findById(id);
           product.quantity += quantity;
@@ -100,7 +100,7 @@ module.exports = {
     },
     updateDiscount: async function (_, { id, discount }) {
       try {
-        const employee = checkAuth(context);
+        const employee = checkEmpToken(context);
         if (employee) {
           const product = await Product.findById(id);
           product.discount = discount;
@@ -114,7 +114,7 @@ module.exports = {
     },
     deleteProduct: async function (_, { id }, context) {
       try {
-        const employee = checkAuth(context);
+        const employee = checkEmpToken(context);
         if (employee) {
           const product = await Product.findByIdAndDelete(id);
           return product;

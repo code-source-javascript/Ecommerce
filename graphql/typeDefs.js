@@ -71,6 +71,23 @@ module.exports = gql`
     feedback: [Feedback]!
     picture: [String]!
   }
+  type Employee {
+    id: ID
+    employeeId: String
+    lastName: String
+    firstName: String
+    email: String
+    phone: String
+    address: Address
+    position: String
+    image: String
+    token: String
+  }
+  input AddressInput {
+    country: String
+    street: String
+    city: String
+  }
   input CreateUserInput {
     lastName: String
     firstName: String
@@ -78,6 +95,18 @@ module.exports = gql`
     phone: String
     password: String
     confirmPassword: String
+    address: AddressInput
+    image: String
+  }
+  input EmployeeInput {
+    id: ID
+    employeeId: String
+    lastName: String
+    firstName: String
+    email: String
+    phone: String
+    address: AddressInput
+    position: String
     image: String
   }
 
@@ -121,12 +150,16 @@ module.exports = gql`
     getProducts: [Product]!
     getProduct(id: ID!): Product!
     login(email: String, password: String): User!
+    loginEmployee(employeeId: String, password: String): Employee!
   }
   type Mutation {
     createUser(input: CreateUserInput): User!
     deleteUser(id: ID): User!
     addToCart(id: ID, variation: [String]!): User!
     orderItem(id: ID!, station: String): User!
+    createEmployee(input: EmployeeInput): Employee!
+    deleteEmployee(id: ID): Employee!
+    updateEmployee(id: ID, employee: EmployeeInput): Employee!
     addNewProduct(input: ProductInput): Product!
     updateProduct(product: ProductInput, id: ID): Product!
     updateQuantity(id: ID, quantity: Int): Product!

@@ -2,9 +2,9 @@ const bcrypt = require("bcryptjs");
 const { UserInputError } = require("apollo-server");
 const User = require("../../model/User");
 const Product = require("../../model/Product");
-const generateToken = require("../../util/generateToken");
+const { generateUserToken } = require("../../util/generateToken");
 const { validateCreateUser } = require("../../util/validators");
-const checkAuth = require("../../util/checkAuth");
+const { checkUserToken } = require("../../util/checkAuth");
 
 module.exports = {
   Query: {
@@ -36,7 +36,7 @@ module.exports = {
         if (user) {
           const compare = await bcrypt.compare(password, user.password);
           if (!compare) throw new Error("Incorrect password");
-          const token = generateToken({
+          const token = generateUserToken({
             lastName: user.lastName,
             firstName: user.firsName,
             email: user.email,
@@ -105,7 +105,7 @@ module.exports = {
         });
 
         const res = await newUser.save();
-        const token = generateToken({
+        const token = generateUserToken({
           lastName,
           firstName,
           email,
@@ -132,7 +132,7 @@ module.exports = {
     },
     addToCart: async function (_, { id, shipping, variation }, context) {
       try {
-        const user = checkAuth(context);
+        const user = checkUserToken(context);
         if (user) {
           const product = await Product.findById(id);
           if (product) {
@@ -156,7 +156,7 @@ module.exports = {
     },
     orderItem: async function (_, { id, station }, context) {
       try {
-        const user = checkAuth(context);
+        const user = checkUserToken(context);
         if (user) {
           const _user = await User.findById(user.id);
           _user.orders.unshift({
