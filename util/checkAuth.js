@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const { SECRETE, EMPSECRET, ADMINSECRET } = require("../config") || process.env;
+const { SECRETE, EMPSECRET, ADMINSECRET } =  process.env;
 
 module.exports = {
   checkUserToken: async function (context) {

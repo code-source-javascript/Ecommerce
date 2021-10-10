@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const typeDefs = require("./graphql/typeDefs");
 const resolvers = require("./graphql/resolvers");
-const { MONGO_URI, PORT } = require("./config") || process.env;
+const { MONGO_URI, PORT } = process.env;
 
 const server = new ApolloServer({
   typeDefs,
