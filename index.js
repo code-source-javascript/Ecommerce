@@ -16,7 +16,7 @@ mongoose
   .connect(MONGO_URI || process.env.MONGO_URI, { useNewUrlParser: true })
   .then(() => {
     console.log("Database is Connected");
-    return server.listen({ port: process.env.port });
+    return server.listen({ port: process.env.PORT });
   })
   .then((res) => {
     console.log(`Server running on ${res.url}`);
