@@ -13,10 +13,10 @@ const server = new ApolloServer({
   },
 });
 mongoose
-  .connect(MONGO_URI, { useNewUrlParser: true })
+  .connect(MONGO_URI || process.env.MONGO_URI, { useNewUrlParser: true })
   .then(() => {
     console.log("Database is Connected");
-    return server.listen({ port: PORT });
+    return server.listen({ port: process.env.port });
   })
   .then((res) => {
     console.log(`Server running on ${res.url}`);
