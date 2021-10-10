@@ -1,20 +1,20 @@
 const jwt = require("jsonwebtoken");
-const { SECRETE, EMPSECRET, ADMINSECRET } = require("../config");
+const { SECRETE, EMPSECRET, ADMINSECRET } = require("../config") || process.env;
 module.exports = {
   generateUserToken: async function (user) {
-    const token = jwt.sign(user, SECRETE || process.env.SECRETE, {
+    const token = jwt.sign(user, SECRETE, {
       expiresIn: "1h",
     });
     return token;
   },
   generateEmpToken: async function (emp) {
-    const token = jwt.sign(emp, EMPSECRET || process.env.EMPSECRET, {
+    const token = jwt.sign(emp, EMPSECRET, {
       expiresIn: "1h",
     });
     return token;
   },
   generateAdminToken: async function (admin) {
-    const token = jwt.sign(admin, ADMINSECRET || process.env.ADMINSECRET, {
+    const token = jwt.sign(admin, ADMINSECRET, {
       expiresIn: "1h",
     });
     return token;

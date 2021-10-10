@@ -1,13 +1,13 @@
 const jwt = require("jsonwebtoken");
 
-const { SECRETE, EMPSECRET, ADMINSECRET } = require("../config");
+const { SECRETE, EMPSECRET, ADMINSECRET } = require("../config") || process.env;
 
 module.exports = {
   checkUserToken: async function (context) {
     try {
       const AuthHeader = context.req.headers.authorization;
       if (AuthHeader) {
-        const user = jwt.verify(AuthHeader, SECRETE || process.env.SECRETE);
+        const user = jwt.verify(AuthHeader, SECRETE);
         return user;
       } else throw new Error("Provide Authorization Header");
     } catch (err) {
@@ -18,7 +18,7 @@ module.exports = {
     try {
       const AuthHeader = context.headers.authorization;
       if (AuthHeader) {
-        const emp = jwt.verify(AuthHeader, EMPSECRET || process.env.EMPSECRET);
+        const emp = jwt.verify(AuthHeader, EMPSECRET);
         return emp;
       } else throw new Error("Provide Authorization Header");
     } catch (err) {
@@ -28,10 +28,7 @@ module.exports = {
   checkAdminToken: async function (context) {
     const AuthHeader = context.headers.authorization;
     if (AuthHeader) {
-      const admin = jwt.verify(
-        AuthHeader,
-        ADMINSECRET || process.env.ADMINSECRET
-      );
+      const admin = jwt.verify(AuthHeader, ADMINSECRET);
       return admin;
     }
   },
