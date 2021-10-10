@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const { SECRETE, EMPSECRET } = require("../config");
+const { SECRETE, EMPSECRET, ADMINSECRET } = require("../config");
 
 module.exports = {
   checkUserToken: async function (context) {
@@ -23,6 +23,13 @@ module.exports = {
       } else throw new Error("Provide Authorization Header");
     } catch (err) {
       throw new Error(err);
+    }
+  },
+  checkAdminToken: async function (context) {
+    const AuthHeader = context.headers.authorization;
+    if (AuthHeader) {
+      const admin = jwt.verify(AuthHeader, ADMINSECRET);
+      return admin;
     }
   },
 };

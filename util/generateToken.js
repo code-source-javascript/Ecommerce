@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { SECRETE, EMPSECRET } = require("../config");
+const { SECRETE, EMPSECRET, ADMINSECRET } = require("../config");
 module.exports = {
   generateUserToken: async function (user) {
     const token = jwt.sign(user, SECRETE, { expiresIn: "1h" });
@@ -7,6 +7,10 @@ module.exports = {
   },
   generateEmpToken: async function (emp) {
     const token = jwt.sign(emp, EMPSECRET, { expiresIn: "1h" });
+    return token;
+  },
+  generateAdminToken: async function (admin) {
+    const token = jwt.sign(admin, ADMINSECRET, { expiresIn: "1h" });
     return token;
   },
 };

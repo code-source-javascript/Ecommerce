@@ -83,6 +83,10 @@ module.exports = gql`
     image: String
     token: String
   }
+  type Admin {
+    username: String
+    token: String
+  }
   input AddressInput {
     country: String
     street: String
@@ -127,6 +131,13 @@ module.exports = gql`
     keyValue: Boolean
   }
 
+  input ChangePasswordInput {
+    employeeId: String
+    oldPassword: String
+    newPassword: String
+    confirmPassword: String
+  }
+
   input ProductInput {
     name: String
     brand: String
@@ -151,6 +162,7 @@ module.exports = gql`
     getProduct(id: ID!): Product!
     login(email: String, password: String): User!
     loginEmployee(employeeId: String, password: String): Employee!
+    loginAdmin(username: String, password: String): Admin!
   }
   type Mutation {
     createUser(input: CreateUserInput): User!
@@ -165,5 +177,7 @@ module.exports = gql`
     updateQuantity(id: ID, quantity: Int): Product!
     updateDiscount(id: ID, discount: Int): Product!
     deleteProduct(id: ID): Product!
+    createAdmin(username: String, password: String): Admin!
+    changePassword(input: ChangePasswordInput): Employee!
   }
 `;
