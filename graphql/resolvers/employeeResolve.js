@@ -47,6 +47,7 @@ module.exports = {
             username,
           });
           return {
+            id: admin._id,
             username,
             token,
           };

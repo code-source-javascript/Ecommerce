@@ -104,7 +104,6 @@ module.exports = gql`
     image: String
   }
   input EmployeeInput {
-    id: ID
     employeeId: String
     lastName: String
     firstName: String
