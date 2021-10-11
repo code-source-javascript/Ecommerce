@@ -17,7 +17,7 @@ module.exports = {
   },
   checkEmpToken: async function (context) {
     try {
-      const AuthHeader = context.headers.authorization;
+      const AuthHeader = context.req.headers.authorization;
       if (AuthHeader) {
         const emp = jwt.verify(AuthHeader, EMPSECRET);
         return emp;
@@ -26,11 +26,16 @@ module.exports = {
       throw new Error(err);
     }
   },
+
   checkAdminToken: async function (context) {
-    const AuthHeader = context.headers.authorization;
-    if (AuthHeader) {
-      const admin = jwt.verify(AuthHeader, ADMINSECRET);
-      return admin;
+    try {
+      const AuthHeader = context.req.headers.authorization;
+      if (AuthHeader) {
+        const admin = jwt.verify(AuthHeader, ADMINSECRET);
+        return admin;
+      } else throw new Error("Provide Authorization Header");
+    } catch (err) {
+      throw new Error(err);
     }
   },
 };

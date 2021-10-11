@@ -7,7 +7,7 @@ const {
   generateEmpToken,
   generateAdminToken,
 } = require("../../util/generateToken");
-const { checkAdminToken } = require("../../util/checkAuth");
+const { checkAdminToken, checkEmpToken } = require("../../util/checkAuth");
 const generateTemp = require("../../util/generateTemp");
 module.exports = {
   Query: {
@@ -60,28 +60,31 @@ module.exports = {
   Mutation: {
     createEmployee: async function (_, { input }, context) {
       try {
-        const admin = checkAdminToken(context);
-        // create random password, send to user throw text message or email to employee and allow him/her change it
-        const _admin = Admin.findOne({ username: admin.username });
-        if (_admin) {
-          const oldEmp = await Employee.findOne({
-            employeeId: input.employeeId,
-          });
-          if (oldEmp) {
-            throw new Error("Employee Already Exist");
-          }
-          const tempPassword = generateTemp();
-          const hash = bcrypt.hash(tempPassword, 12);
-          const employee = new Employee({
-            ...input,
-            password: hash,
-          });
-          const res = await employee.save();
-          console.log(
-            `This message is to be sent as SMS ... Temporary Password is ${tempPassword}`
-          );
-          return res;
-        } else throw new Error("Administrator must login");
+        const admin = await checkAdminToken(context);
+        if (admin) {
+          const coAdmin = Admin.findOne({ username: admin.username });
+          if (coAdmin) {
+            const oldEmp = await Employee.findOne({
+              employeeId: input.employeeId,
+            });
+            if (oldEmp) {
+              throw new Error("Employee Already Exist");
+            } else {
+              const tempPassword = generateTemp();
+
+              const hash = await bcrypt.hash(tempPassword, 12);
+              const employee = new Employee({
+                ...input,
+                password: hash,
+              });
+              const res = await employee.save();
+              console.log(
+                `This message is to be sent as SMS ... Temporary Password is ${tempPassword}`
+              );
+              return res;
+            }
+          } else throw new Error("Administrator doesn't exist");
+        } else throw new Error("Administrator must authenticate");
       } catch (err) {
         throw new Error(err);
       }

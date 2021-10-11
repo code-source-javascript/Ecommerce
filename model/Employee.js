@@ -9,7 +9,7 @@ const employeeSchema = new Schema({
   address: {
     country: String,
     city: String,
-    state: String,
+    street: String,
   },
   position: String,
   image: String,
