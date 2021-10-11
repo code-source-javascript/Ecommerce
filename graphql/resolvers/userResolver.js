@@ -4,17 +4,22 @@ const User = require("../../model/User");
 const Product = require("../../model/Product");
 const { generateUserToken } = require("../../util/generateToken");
 const { validateCreateUser } = require("../../util/validators");
-const { checkUserToken } = require("../../util/checkAuth");
+const { checkUserToken, checkAdminToken } = require("../../util/checkAuth");
+const Admin = require("../../model/Admin");
 
 module.exports = {
   Query: {
     getUsers: async function (_, args, context, info) {
       try {
-        const users = await User.find();
-        if (users) {
-          return users;
-        } else {
-          throw new Error(err);
+        const admin = checkAdminToken(context);
+        const _admin = Admin.findOne({ username: admin.username });
+        if (_admin) {
+          const users = await User.find();
+          if (users) {
+            return users;
+          } else {
+            throw new Error(err);
+          }
         }
       } catch (err) {
         throw new Error(err);

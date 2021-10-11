@@ -61,11 +61,8 @@ module.exports = {
       try {
         const admin = checkAdminAuth(context);
         // create random password, send to user throw text message or email to employee and allow him/her change it
-
-        if (admin) {
-          if (admin.username !== "user.admin.mail") {
-            throw new Error("Admin can't perform action");
-          }
+        const _admin = Admin.findOne({ username: admin.username });
+        if (_admin) {
           const oldEmp = await Employee.findOne({
             employeeId: input.employeeId,
           });
