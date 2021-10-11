@@ -7,7 +7,7 @@ const {
   generateEmpToken,
   generateAdminToken,
 } = require("../../util/generateToken");
-const { checkAdminAuth } = require("../../util/checkAuth");
+const { checkAdminToken } = require("../../util/checkAuth");
 const generateTemp = require("../../util/generateTemp");
 module.exports = {
   Query: {
@@ -60,7 +60,7 @@ module.exports = {
   Mutation: {
     createEmployee: async function (_, { input }, context) {
       try {
-        const admin = checkAdminAuth(context);
+        const admin = checkAdminToken(context);
         // create random password, send to user throw text message or email to employee and allow him/her change it
         const _admin = Admin.findOne({ username: admin.username });
         if (_admin) {
