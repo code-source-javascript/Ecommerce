@@ -46,9 +46,17 @@ module.exports = {
       context
     ) {
       try {
-        const employee = checkEmpToken(context);
+        const employee = await checkEmpToken(context);
         if (employee) {
-          const product = await new Product({
+          const product = await Product.findOne({ name: name });
+          if (product) {
+            if (product.seller === seller && product.brand === brand) {
+              throw new Error(
+                "Item Is Already Available For Seller, Hence Find Product And Update"
+              );
+            }
+          }
+          const newProduct = await new Product({
             name,
             brand,
             category,
@@ -65,7 +73,7 @@ module.exports = {
             variation,
           });
 
-          const res = await product.save();
+          const res = await newProduct.save();
           return res;
         }
         throw new Error("You must be login");
@@ -75,7 +83,7 @@ module.exports = {
     },
     updateProduct: async function (_, { product, id }, context) {
       try {
-        const employee = checkEmpToken(context);
+        const employee = await checkEmpToken(context);
         if (employee) {
           const updateProduct = await Product.findByIdAndUpdate(id, product);
           return updateProduct;
@@ -86,7 +94,7 @@ module.exports = {
     },
     updateQuantity: async function (_, { id, quantity }, context) {
       try {
-        const employee = checkEmpToken(context);
+        const employee = await checkEmpToken(context);
         if (employee) {
           const product = await Product.findById(id);
           product.quantity += quantity;
@@ -100,7 +108,7 @@ module.exports = {
     },
     updateDiscount: async function (_, { id, discount }) {
       try {
-        const employee = checkEmpToken(context);
+        const employee = await checkEmpToken(context);
         if (employee) {
           const product = await Product.findById(id);
           product.discount = discount;
@@ -114,7 +122,7 @@ module.exports = {
     },
     deleteProduct: async function (_, { id }, context) {
       try {
-        const employee = checkEmpToken(context);
+        const employee = await checkEmpToken(context);
         if (employee) {
           const product = await Product.findByIdAndDelete(id);
           return product;

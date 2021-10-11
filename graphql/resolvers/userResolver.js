@@ -11,7 +11,7 @@ module.exports = {
   Query: {
     getUsers: async function (_, args, context, info) {
       try {
-        const admin = checkAdminToken(context);
+        const admin = await checkAdminToken(context);
         const _admin = Admin.findOne({ username: admin.username });
         if (_admin) {
           const users = await User.find();
@@ -161,7 +161,7 @@ module.exports = {
     },
     orderItem: async function (_, { id, station }, context) {
       try {
-        const user = checkUserToken(context);
+        const user = await checkUserToken(context);
         if (user) {
           const _user = await User.findById(user.id);
           _user.orders.unshift({

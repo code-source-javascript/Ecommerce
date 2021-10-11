@@ -152,7 +152,6 @@ module.exports = gql`
     quantity: Int
     features: [FeatureInput]
     specifications: [SpecificationInput]!
-    feedback: [FeedbackInput]!
     picture: [String]!
   }
   type Query {

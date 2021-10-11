@@ -67,7 +67,7 @@ module.exports = {
             const oldEmp = await Employee.findOne({
               employeeId: input.employeeId,
             });
-            if (oldEmp) {
+            if (oldEmp || oldEmp.email === input.email) {
               throw new Error("Employee Already Exist");
             } else {
               const tempPassword = generateTemp();

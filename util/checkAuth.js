@@ -1,6 +1,6 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
-
+const { AuthenticationError } = require("apollo-server");
 const { SECRETE, EMPSECRET, ADMINSECRET } = process.env;
 
 module.exports = {
@@ -18,10 +18,11 @@ module.exports = {
   checkEmpToken: async function (context) {
     try {
       const AuthHeader = context.req.headers.authorization;
-      if (AuthHeader) {
-        const emp = jwt.verify(AuthHeader, EMPSECRET);
-        return emp;
-      } else throw new Error("Provide Authorization Header");
+      if (!AuthHeader) {
+        throw new AuthenticationError("Provide Authorization Header");
+      }
+      const emp = jwt.verify(AuthHeader, EMPSECRET);
+      return emp;
     } catch (err) {
       throw new Error(err);
     }

@@ -9,6 +9,7 @@ const productSchema = new Schema({
   category: String,
   discount: Number,
   details: String,
+  seller: String,
   features: [
     {
       name: String,
