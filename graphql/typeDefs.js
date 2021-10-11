@@ -84,6 +84,7 @@ module.exports = gql`
     token: String
   }
   type Admin {
+    id: ID
     username: String
     token: String
   }

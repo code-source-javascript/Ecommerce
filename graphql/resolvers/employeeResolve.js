@@ -92,10 +92,10 @@ module.exports = {
       try {
         const employee = await Employee.findOne({ employeeId: employeeId });
         if (employee) {
-          const old = bcrypt.compare(oldPassword, employee.password);
+          const old = await bcrypt.compare(oldPassword, employee.password);
           if (old) {
             if (newPassword === confirmPassword) {
-              employee.password = bcrypt.hash(newPassword, 12);
+              employee.password = await bcrypt.hash(newPassword, 12);
               const res = await employee.save();
               return res;
             } else
@@ -110,12 +110,12 @@ module.exports = {
     },
     createAdmin: async function (_, { username, password }) {
       try {
-        const hashPassword = bcrypt.hash(password, 12);
+        const hashPassword = await bcrypt.hash(password, 12);
         const admin = new Admin({
           username,
           password: hashPassword,
         });
-        const res = await admin.save;
+        const res = await admin.save();
         return res;
       } catch (err) {
         throw new Error(err);
