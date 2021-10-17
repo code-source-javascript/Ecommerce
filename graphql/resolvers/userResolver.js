@@ -136,7 +136,6 @@ module.exports = {
                 product: product._id,
                 name: product.name,
                 seller: product.seller,
-                shipping: product.shipping,
                 variation,
                 unitPrice: product.price,
                 createdAt: new Date(),
