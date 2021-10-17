@@ -22,8 +22,8 @@ module.exports = gql`
     city: String
   }
   type Cart {
-    cartId: ID!
-    product: ID!
+    _id: ID
+    product: ID
     name: String
     createdAt: String
     variation: String
@@ -34,17 +34,17 @@ module.exports = gql`
   }
 
   type Order {
-    cartId: ID!
+    cartId: ID
     station: String
     status: String
     createdAt: String
   }
   type User {
     id: ID!
-    lastName: String
-    firstName: String
+    lastName: String!
+    firstName: String!
     email: String!
-    phone: String
+    phone: String!
     token: String
     orders: [Order]!
     cart: [Cart]!
@@ -166,7 +166,7 @@ module.exports = gql`
   type Mutation {
     createUser(input: CreateUserInput): User!
     deleteUser(id: ID): User!
-    addToCart(id: ID, variation: [String]!): User!
+    addToCart(id: ID, variation: String): User!
     orderItem(id: ID!, station: String): User!
     createEmployee(input: EmployeeInput): Employee!
     deleteEmployee(id: ID): Employee!

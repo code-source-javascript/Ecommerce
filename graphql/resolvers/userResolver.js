@@ -42,13 +42,7 @@ module.exports = {
           const compare = await bcrypt.compare(password, user.password);
           if (!compare) throw new Error("Incorrect password");
           const token = generateUserToken({
-            lastName: user.lastName,
-            firstName: user.firsName,
             email: user.email,
-            cart: user.cart,
-            orders: user.orders,
-            phone: user.phone,
-            image: user.image,
             id: user._id,
           });
           return {
@@ -111,13 +105,8 @@ module.exports = {
 
         const res = await newUser.save();
         const token = generateUserToken({
-          lastName,
-          firstName,
-          email,
-          phone,
-          image,
-          address,
           id: res._id,
+          email,
         });
         return {
           ...res._doc,
@@ -135,25 +124,27 @@ module.exports = {
         return _user;
       } else throw new Error("User Not Available");
     },
-    addToCart: async function (_, { id, shipping, variation }, context) {
+    addToCart: async function (_, { id, variation }, context) {
       try {
-        const user = checkUserToken(context);
+        const user = await checkUserToken(context);
         if (user) {
           const product = await Product.findById(id);
           if (product) {
             const cartUser = await User.findById(user.id);
-            cartUser.cart.unshift({
-              product: product._id,
-              name: product.name,
-              seller: product.seller,
-              shipping: product.shipping,
-              variation,
-              unitPrice: product.price,
-              createdAt: new Date(),
-            });
-          }
-          const res = await cartUser.save();
-          return res;
+            if (cartUser) {
+              cartUser.cart.unshift({
+                product: product._id,
+                name: product.name,
+                seller: product.seller,
+                shipping: product.shipping,
+                variation,
+                unitPrice: product.price,
+                createdAt: new Date(),
+              });
+              const res = await cartUser.save();
+              return res;
+            } else throw new Error("User not found");
+          } else throw new Error("Product is not available");
         } else throw new Error("You must be authorized");
       } catch (err) {
         throw new Error(err);
@@ -165,7 +156,7 @@ module.exports = {
         if (user) {
           const _user = await User.findById(user.id);
           _user.orders.unshift({
-            cardId: id,
+            cartId: id,
             station,
             status: "PENDING",
             createdAt: new Date(),

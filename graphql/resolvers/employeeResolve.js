@@ -115,13 +115,19 @@ module.exports = {
     },
     createAdmin: async function (_, { username, password }) {
       try {
-        const hashPassword = await bcrypt.hash(password, 12);
-        const admin = new Admin({
-          username,
-          password: hashPassword,
-        });
-        const res = await admin.save();
-        return res;
+        const _admin = await Admin.findOne({ username: username });
+        if (_admin) {
+          throw new Error("User already exist");
+        }
+        if (username === "user@admin.mail") {
+          const hashPassword = await bcrypt.hash(password, 12);
+          const admin = new Admin({
+            username,
+            password: hashPassword,
+          });
+          const res = await admin.save();
+          return res;
+        } else throw new Error("You can't create a new account for admin");
       } catch (err) {
         throw new Error(err);
       }
